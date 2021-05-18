@@ -7,27 +7,35 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = (theme) => ({
   root: {
     width: '100%',
+    marginTop: theme.spacing.unit * 3,
     overflowX: 'auto'
   },
   table: {
     minWidth: 1080
+  },
+  progress: {
+    margin: theme.spacing.unit * 2
   }
 })
 
 class App extends Component {
 
   state = {
-    customers: ""
+    customers: "",
+    completed: 0
   }
   componentDidMount() {
+    this.timer = setInterval(this.progress, 20);
     this.callApi()
       .then((res) => (this.setState({ customers: res })))
-      .catch((error) => console.log(errror))
+      .catch((error) => console.log(error))
   }
+
   callApi = async () => {
     const responce = await fetch('/api/customers');
     console.log(responce)
@@ -35,6 +43,10 @@ class App extends Component {
     return body;
   }
 
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
+  }
 
   render() {
     console.log(this.state.customers)
@@ -55,8 +67,8 @@ class App extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {customers ? customers.map((customer, index) => {
-              return (<Customer
+            {customers ? customers.map((customer, index) => (
+              <Customer
                 key={index}
                 id={customer.id}
                 image={customer.image}
@@ -64,9 +76,15 @@ class App extends Component {
                 birthday={customer.birthday}
                 gender={customer.gender}
                 job={customer.job} />
-              );
-            })
-              : ""}
+
+            ))
+              :
+              <TableRow>
+                <TableCell colSpan="6" align="center">
+                  <CircularProgress className={classes.progress} variant="determinate" value ={this.state.completed}/>
+                </TableCell>
+              </TableRow>
+            }
           </TableBody>
         </Table>
       </Paper>
