@@ -33,7 +33,7 @@ class App extends Component {
     this.timer = setInterval(this.progress, 20);
     this.callApi()
       .then((res) => (this.setState({ customers: res })))
-      .catch((error) => console.log(error))
+      .catch((error) => console.log(error));
   }
 
   callApi = async () => {
@@ -49,7 +49,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.customers)
     const { classes } = this.props;
     const { customers } = this.state;
 
