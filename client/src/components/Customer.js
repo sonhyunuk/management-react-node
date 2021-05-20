@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import CustomerInfo from './CustomerInfo';
-import CustomerProfile from './CustmerProfile';
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 
