@@ -17,21 +17,32 @@ class CustomerAdd extends React.Component {
     }
     handleValueChange = (e) => {
         this.setState({
-            [e.target.file] : e.target.value
+            [e.target.name]: e.target.value
         })
     }
 
     handleFileChange = (e) => {
         this.setState({
-            file : e.target.files[0],
-            fileName : e.target.value
+            file: e.target.files[0],
+            fileName: e.target.value
         })
     }
 
     handleFormSubmit = (e) => {
         e.preventDefault()
         this.addCustomer()
-            .then((responce) => console.log(responce));
+            .then((responce) => {
+                console.log(responce.data)
+            })
+        this.setState({
+            file: null,
+            userName: '',
+            birthday: '',
+            gender: '',
+            job: '',
+            fileName: ''
+        })
+        window.location.reload();
     }
 
     addCustomer = () => {
